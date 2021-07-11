@@ -17,10 +17,11 @@ fun scrape() {
     val indexList = doc.select(".betaka-index > ul")
     for(ul in indexList.iterator()) {
         val firstIndex = ul.selectFirst("li")
-        val sections = firstIndex.select("li > a")
-        // textNodes to access <a> text
-        val mainSection = sections[1].text()
+        val allLinks = firstIndex.select("li > a")
+        val chapter = allLinks[1]
+        val chapterText = chapter.text()
+        val chapterLink = chapter.attr("href")
         // create new JSON entry keyed by index
-        println(mainSection)
+        println("$chapterText :  $chapterLink")
     }
 }
