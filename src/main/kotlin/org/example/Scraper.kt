@@ -19,9 +19,12 @@ fun scrape() {
         val firstIndex = ul.selectFirst("li")
         val allLinks = firstIndex.select("li > a")
         val chapter = allLinks[1]
+        // TODO: create directory named after chapterText
         val chapterText = chapter.text()
         val chapterLink = chapter.attr("href")
+        val currentChapter = Jsoup.connect(chapterLink).get().select(".nass")
         // create new JSON entry keyed by index
-        println("$chapterText :  $chapterLink")
+        println(chapterLink)
+        println(currentChapter)
     }
 }
