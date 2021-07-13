@@ -3,6 +3,7 @@ import com.google.gson.Gson
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import java.lang.IndexOutOfBoundsException
 
 val doc: Document = Jsoup.connect(System.getenv("url")).get()
 val gson = Gson()
@@ -24,7 +25,11 @@ fun scrape() {
         val chapterLink = chapter.attr("href")
         val currentChapter = Jsoup.connect(chapterLink).get().select(".nass")
         // create new JSON entry keyed by index
-        println(chapterLink)
-        println(currentChapter)
+        for(index in 2 until allLinks.size - 1) {
+            val href = allLinks[index].attr("href")
+            println(href)
+        }
+        // println(allLinks)
+
     }
 }
