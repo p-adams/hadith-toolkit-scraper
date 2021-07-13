@@ -3,7 +3,7 @@ import com.google.gson.Gson
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import java.lang.IndexOutOfBoundsException
+
 
 val doc: Document = Jsoup.connect(System.getenv("url")).get()
 val gson = Gson()
