@@ -25,7 +25,8 @@ fun scrape() {
         val chapterLink = chapter.attr("href")
         val currentChapter = Jsoup.connect(chapterLink).get().select(".nass")
         // create new JSON entry keyed by index
-        for(index in 2 until allLinks.size - 1) {
+        // iterate over sibling links starting from index 1 since index 0 is typically and expand (i.e. [+]) widget
+        for(index in 1 until allLinks.size - 1) {
             val href = allLinks[index].attr("href")
             println(href)
         }
