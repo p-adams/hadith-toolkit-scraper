@@ -3,6 +3,8 @@ import com.google.gson.Gson
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import java.net.URI
+import java.nio.file.Paths
 
 
 val doc: Document = Jsoup.connect(System.getenv("url")).get()
@@ -28,7 +30,10 @@ fun scrape() {
         // iterate over sibling links starting from index 1 since index 0 is typically and expand (i.e. [+]) widget
         for(index in 1 until allLinks.size - 1) {
             val href = allLinks[index].attr("href")
-            println(href)
+            val nextHref = allLinks[index + 1].attr("href")
+            val path = Paths.get(href).fileName.toString().toInt()
+            val nextPath = Paths.get(nextHref).fileName.toString().toInt()
+
         }
         // println(allLinks)
 
