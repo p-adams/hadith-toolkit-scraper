@@ -6,8 +6,8 @@ import org.jsoup.nodes.Element
 import java.net.URI
 import java.nio.file.Paths
 
-
-val doc: Document = Jsoup.connect(System.getenv("url")).get()
+val BASE_URL = System.getenv("url")
+val doc: Document = Jsoup.connect(BASE_URL).get()
 val gson = Gson()
 
 data class ExtractedBiography(val id: String, val data: String)
@@ -35,7 +35,13 @@ fun scrape() {
             val nextPath = Paths.get(nextHref).fileName.toString().toInt()
             val range = path..nextPath
             if(path != nextPath) {
-                println(range)
+                for(page in range) {
+                    val currentPage = Jsoup.connect("$BASE_URL/$page").get().select(".nass > p")
+                    val currentPageTextNodes = currentPage.textNodes()
+                    for(node in currentPageTextNodes) {
+                        println(node)
+                    }
+                }
             }
 
 
