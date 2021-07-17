@@ -3,10 +3,9 @@ import com.google.gson.Gson
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import java.net.URI
 import java.nio.file.Paths
 
-val BASE_URL = System.getenv("url")
+val BASE_URL: String = System.getenv("url")
 val doc: Document = Jsoup.connect(BASE_URL).get()
 val gson = Gson()
 
