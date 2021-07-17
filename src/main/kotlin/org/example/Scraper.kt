@@ -38,7 +38,7 @@ fun scrape() {
                     val currentPage = Jsoup.connect("$BASE_URL/$page").get().select(".nass > p")
                     val currentPageTextNodes = currentPage.textNodes()
                     for(node in currentPageTextNodes) {
-                        println(node)
+                        println(node.text())
                     }
                 }
             }
