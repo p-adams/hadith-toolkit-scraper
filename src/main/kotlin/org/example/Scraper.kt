@@ -33,6 +33,11 @@ fun scrape() {
             val nextHref = allLinks[index + 1].attr("href")
             val path = Paths.get(href).fileName.toString().toInt()
             val nextPath = Paths.get(nextHref).fileName.toString().toInt()
+            val range = path..nextPath
+            if(path != nextPath) {
+                println(range)
+            }
+
 
         }
         // println(allLinks)
