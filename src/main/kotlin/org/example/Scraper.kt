@@ -18,6 +18,11 @@ fun liToJson(liElement: Element): String? {
 fun scrape() {
     val indexList = doc.select(".betaka-index > ul")
     for(ul in indexList.iterator()) {
+        val subsections = ul.select("li > ul")
+        // process chapter w/out subsections
+        if(subsections == null) {
+            println(ul.select("li > a"))
+        }
         val firstIndex = ul.selectFirst("li")
         val allLinks = firstIndex.select("li > a")
         val chapter = allLinks[1]
@@ -38,7 +43,8 @@ fun scrape() {
                     val currentPage = Jsoup.connect("$BASE_URL/$page").get().select(".nass > p")
                     val currentPageTextNodes = currentPage.textNodes()
                     for(node in currentPageTextNodes) {
-                        println(node.text())
+                        val text = node.text()
+
                     }
                 }
             }
