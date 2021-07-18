@@ -11,47 +11,31 @@ val gson = Gson()
 
 data class ExtractedBiography(val id: String, val data: String)
 
-fun liToJson(liElement: Element): String? {
-    return gson.toJson(ExtractedBiography("1", "sample"))
-}
-
 fun scrape() {
     val indexList = doc.select(".betaka-index > ul")
     for(ul in indexList.iterator()) {
-        val subsections = ul.select("li > ul")
-        // process chapter w/out subsections
-        if(subsections == null) {
-            println(ul.select("li > a"))
-        }
-        val firstIndex = ul.selectFirst("li")
-        val allLinks = firstIndex.select("li > a")
-        val chapter = allLinks[1]
-        // TODO: create directory named after chapterText
-        val chapterText = chapter.text()
-        val chapterLink = chapter.attr("href")
-        val currentChapter = Jsoup.connect(chapterLink).get().select(".nass")
-        // create new JSON entry keyed by index
-        // iterate over sibling links starting from index 1 since index 0 is typically and expand (i.e. [+]) widget
-        for(index in 1 until allLinks.size - 1) {
-            val href = allLinks[index].attr("href")
-            val nextHref = allLinks[index + 1].attr("href")
-            val path = Paths.get(href).fileName.toString().toInt()
-            val nextPath = Paths.get(nextHref).fileName.toString().toInt()
-            val range = path..nextPath
-            if(path != nextPath) {
-                for(page in range) {
-                    val currentPage = Jsoup.connect("$BASE_URL/$page").get().select(".nass > p")
-                    val currentPageTextNodes = currentPage.textNodes()
-                    for(node in currentPageTextNodes) {
-                        val text = node.text()
+        val listItems = ul.select("li")
+        for(index in  0 until listItems.size - 1) {
+            // TODO: extract chapter title to organize data by chapters
+            val link = listItems[index].select("a")
+            val nextLink = listItems[index + 1].select("a")
+            val href = link.attr("href")
+            val nextHref = nextLink.attr("href")
+            if(href != "javascript:;" && nextHref != "javascript:;") {
+                val path = Paths.get(href).fileName.toString().toInt()
+                val nextPath = Paths.get(nextHref).fileName.toString().toInt()
+                val range = path..nextPath
+                if(path != nextPath) {
+                    for(page in range) {
+                        val currentPage = Jsoup.connect("$BASE_URL/$page").get().select(".nass > p")
+                        val currentPageTextNodes = currentPage.textNodes()
+                        for(node in currentPageTextNodes) {
+                            val text = node.text()
 
+                        }
                     }
                 }
             }
-
-
         }
-        // println(allLinks)
-
     }
 }
