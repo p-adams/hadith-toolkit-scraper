@@ -1,5 +1,6 @@
 package org.example
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -14,11 +15,9 @@ data class ExtractedBiography(val id: String, val data: String)
 fun scrape() {
     var extractedBiographies = mutableListOf<ExtractedBiography>()
     val indexList = doc.select(".betaka-index > ul")
-    // TODO: create biographies sub-directory
     for(ul in indexList.iterator()) {
         val listItems = ul.select("li")
         for(index in  0 until listItems.size - 1) {
-            // TODO: extract chapter title to organize data by chapters
             val link = listItems[index].select("a")
             val nextLink = listItems[index + 1].select("a")
             val href = link.attr("href")
@@ -32,7 +31,7 @@ fun scrape() {
                         val currentPage = Jsoup.connect("$BASE_URL/$page").get().select(".nass > p")
                         val currentPageTextNodes = currentPage.textNodes()
                         for(node in currentPageTextNodes) {
-                            // TODO: add each text node to file
+                            // add each text node to list
                             val text = node.text()
                             val splitText = text.split("-")
                             val biographyIndex = splitText.first()
@@ -44,4 +43,8 @@ fun scrape() {
             }
         }
     }
+    val jsonExtractedBiographyList = GsonBuilder()
+        .setPrettyPrinting()
+        .create()
+        .toJson(extractedBiographies)
 }
