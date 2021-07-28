@@ -12,6 +12,7 @@ val gson = Gson()
 data class ExtractedBiography(val id: String, val data: String)
 
 fun scrape() {
+    var extractedBiographies = mutableListOf<ExtractedBiography>()
     val indexList = doc.select(".betaka-index > ul")
     // TODO: create biographies sub-directory
     for(ul in indexList.iterator()) {
@@ -36,6 +37,7 @@ fun scrape() {
                             val splitText = text.split("-")
                             val biographyIndex = splitText.first()
                             val biographyText = splitText.last()
+                            extractedBiographies.add(ExtractedBiography(biographyIndex, biographyText))
                         }
                     }
                 }
