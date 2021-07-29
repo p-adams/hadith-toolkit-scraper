@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import java.io.File
 import java.nio.file.Paths
 
 val BASE_URL: String = System.getenv("url")
@@ -47,4 +48,5 @@ fun scrape() {
         .setPrettyPrinting()
         .create()
         .toJson(extractedBiographies)
+    File("src/main/kotlin/org/example", "taqrib_raw.json").writeText(jsonExtractedBiographyList)
 }
