@@ -1,5 +1,3 @@
 package org.example
-fun main(args: Array<String>) {
-    scrape()
-}
+fun main(args: Array<String>) {}
 
