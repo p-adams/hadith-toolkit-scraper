@@ -1,6 +1,7 @@
 package org.example
-
+import com.google.gson.Gson
 import io.javalin.Javalin
+import java.io.File
 
 fun launchApi() {
     Javalin.create { config ->
@@ -9,6 +10,9 @@ fun launchApi() {
             println(ms)
         }
     }
-    val app = Javalin.create().start(4000)
-    app.get("/") {ctx -> ctx.result("Test")}
+    val app = Javalin.create().start(4001)
+    app.get("/taqrib_raw") { ctx ->
+        val text = File("src/main/kotlin/org/example/assets/taqrib_raw.json").readText()
+        ctx.result(text)
+    }
 }
