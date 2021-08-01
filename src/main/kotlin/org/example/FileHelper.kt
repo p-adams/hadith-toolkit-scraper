@@ -10,7 +10,6 @@ fun paginateExtractedBiographyAssets(fileContent: String) {
     val extractedBiographies = Gson().fromJson<List<ExtractedBiography>>(fileContent, itemType)
     val pages = extractedBiographies.chunked(100)
     for((index, p) in pages.withIndex()) {
-
         File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "$index.json").writeText( GsonBuilder()
             .setPrettyPrinting()
             .create()
