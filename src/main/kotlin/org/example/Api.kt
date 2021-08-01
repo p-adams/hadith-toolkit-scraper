@@ -26,8 +26,8 @@ fun launchApi() {
         }
     }
     val app = Javalin.create().start(4001)
-    app.get("/taqrib_raw") { ctx ->
-        val text = File("src/main/kotlin/org/example/assets/taqrib_raw.json").readText()
+    app.get("/taqrib_raw/:page") { ctx ->
+        val text = File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib/${ctx.pathParam("page")}.json").readText()
         ctx.json(text)
     }
 }
