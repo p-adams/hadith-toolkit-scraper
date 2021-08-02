@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.io.File
 
-fun paginateExtractedBiographyAssets(fileContent: String) {
+fun chunkExtractedBiographyAssets(fileContent: String) {
     val itemType = object : TypeToken<List<ExtractedBiography>>() {}.type
     val extractedBiographies = Gson().fromJson<List<ExtractedBiography>>(fileContent, itemType)
     val pages = extractedBiographies.chunked(100)
