@@ -1,3 +1,19 @@
 package org.example
 
-data class Biography(val id: Number, val name: String, val dob: String?, val dod: String?)
+
+interface BiographyName {
+    val name: String;
+    val teknonym: String?;
+    val connection: String?;
+
+}
+
+data class Biography(
+     val id: Number,
+     val nameDetails: BiographyName,
+     val residence: String,
+     val reliability: String,
+     val period: String,
+     val dod: String?,
+     val collectors: String
+     )
