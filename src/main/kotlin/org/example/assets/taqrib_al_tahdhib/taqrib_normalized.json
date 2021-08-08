@@ -2,9 +2,9 @@
 [
 
   {
-    "__delimiters": "one of: n=name, c=connection, t=teknonyn, r=residence, rel=reliability, p=period, d=dod, col=collectors enclosed in < > tags",
+    "__delimiters": "one of: n=name, c=connection, t=teknonyn, r=residence, rel=reliability, p=period, d=dod, col=collectors appended to trailing equal sign",
     "id": "1",
-    "data": " <أحمد ابن إبراهيم ابن خالدn> <الموصليc> <أبو عليt> نزيل بغداد صدوق من العاشرة مات سنة ست وثلاثين د فق"
+    "data": "أحمد ابن إبراهيم ابن خالد=n الموصلي=c  أبو علي=t نزيل بغداد=r صدوق=rel من العاشرة=p مات سنة ست وثلاثين=d د فق=col"
   },
   {
     "id": "2",
