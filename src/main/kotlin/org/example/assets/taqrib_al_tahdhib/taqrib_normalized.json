@@ -1,8 +1,10 @@
 
 [
+
   {
+    "__delimiters": "one of: n=name, c=connection, t=teknonyn, r=residence, rel=reliability, p=period, d=dod, col=collectors enclosed in < > tags",
     "id": "1",
-    "data": " أحمد ابن إبراهيم ابن خالد الموصلي أبو علي نزيل بغداد صدوق من العاشرة مات سنة ست وثلاثين د فق"
+    "data": " <أحمد ابن إبراهيم ابن خالدn> <الموصليc> <أبو عليt> نزيل بغداد صدوق من العاشرة مات سنة ست وثلاثين د فق"
   },
   {
     "id": "2",
