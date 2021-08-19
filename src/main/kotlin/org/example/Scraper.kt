@@ -14,30 +14,32 @@ val gson = Gson()
 data class ExtractedBiography(val id: String, val data: String)
 
 
-fun pageRanges(): MutableList<Int> {
-    val rangeList = mutableListOf<Int>()
+fun pageRanges(): MutableList<IntRange> {
+    val rangeList = mutableListOf<IntRange>()
+    val pages = mutableListOf<Int>()
     val indexList = doc.select(".betaka-index > ul")
     for(ul in indexList.iterator()) {
-        val listItems = ul.select("li")
-        for (index in 0 until listItems.size - 1) {
-            val link = listItems[index].select("a")
-            val nextLink = listItems[index + 1].select("a")
-            val href = link.attr("href")
-            val nextHref = nextLink.attr("href")
-            if (href == "javascript:;") {
-                rangeList.add(Paths.get(nextHref).fileName.toString().toInt())
+        val listItems = ul.select("li > a")
+        for (link in listItems) {
+            val href = link.select("a").attr("href")
+            if(href != "javascript:;") {
+                val path = Paths.get(href).fileName.toString().toInt()
+                if(!pages.contains(path)) {
+                    pages.add(path)
+                }
             }
         }
+    }
+    for(page in 0 until pages.size - 1) {
+        rangeList.add(pages[page]..pages[page + 1])
     }
     return rangeList
 }
 
 fun scrape() {
     var extractedBiographies = mutableListOf<ExtractedBiography>()
-    for(index in 0 until pageRanges().size - 1) {
-        val start = pageRanges()[index]
-        val end = pageRanges()[index + 1]
-        for(page in start until end) {
+    for(range in pageRanges()) {
+        for(page in range) {
             val currentPage = Jsoup.connect("$BASE_URL/$page").get().select(".nass")
             val currentPageTextNodes = currentPage.select("p")
                for(p in currentPageTextNodes) {
@@ -63,5 +65,5 @@ fun scrape() {
         .setPrettyPrinting()
         .create()
         .toJson(extractedBiographies)
-    File("src/main/kotlin/org/example", "taqrib_raw.json").writeText(jsonExtractedBiographyList)
+    File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "taqrib_raw.json").writeText(jsonExtractedBiographyList)
 }
