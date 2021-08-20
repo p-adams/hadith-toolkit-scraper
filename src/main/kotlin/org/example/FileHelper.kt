@@ -27,11 +27,21 @@ fun biographyIdList(): MutableList<String> {
     val biographies: List<ExtractedBiography> = Gson().fromJson(jsonContent, listBiographyType)
     val ids = mutableListOf<String>()
     for(biography in biographies) {
-        if(biography.id != "*") {
+        if(biography.id != "*" && !ids.contains(biography.id)) {
             ids.add(biography.id)
         }
     }
     return ids
+}
+
+fun getMissingIds(): MutableList<String> {
+    var missingIds = mutableListOf<String>()
+    totalBiographyIds().forEachIndexed { index, s ->
+       if (biographyIdList()[index] != s) {
+           missingIds.add(s)
+       }
+   }
+    return missingIds
 }
 
 
@@ -42,4 +52,23 @@ fun createExtractedBiographyIdsFile() {
         .setPrettyPrinting()
         .create()
         .toJson(ids))
+}
+
+fun removeDuplicateBiographies() {
+    val jsonContent = File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "taqrib_raw.json").readText()
+    val listBiographyType = object : TypeToken<List<ExtractedBiography>>() {}.type
+    val biographies: List<ExtractedBiography> = Gson().fromJson(jsonContent, listBiographyType)
+    val biographiesList = mutableListOf<ExtractedBiography>()
+    for(biography in biographies) {
+        if(biography.id == "*") {
+            biographiesList.add(biography)
+        } else if( !biographiesList.contains(biography)) {
+            biographiesList.add(biography)
+        }
+    }
+    val jsonExtractedBiographyList = GsonBuilder()
+        .setPrettyPrinting()
+        .create()
+        .toJson(biographiesList)
+    File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "taqrib_raw_no_dupes.json").writeText(jsonExtractedBiographyList)
 }
