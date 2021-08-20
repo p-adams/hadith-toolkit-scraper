@@ -17,7 +17,11 @@ fun chunkExtractedBiographyAssets(fileContent: String) {
     }
 }
 
-fun createExtractedBiographyIdsFile() {
+fun totalBiographyIds(): List<String> {
+    return (1..8826).map { it -> it.toString()}
+}
+
+fun biographyIdList(): MutableList<String> {
     val jsonContent = File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "taqrib_raw.json").readText()
     val listBiographyType = object : TypeToken<List<ExtractedBiography>>() {}.type
     val biographies: List<ExtractedBiography> = Gson().fromJson(jsonContent, listBiographyType)
@@ -27,6 +31,12 @@ fun createExtractedBiographyIdsFile() {
             ids.add(biography.id)
         }
     }
+    return ids
+}
+
+
+fun createExtractedBiographyIdsFile() {
+    val ids = biographyIdList()
 
     File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "ids.json").writeText( GsonBuilder()
         .setPrettyPrinting()
