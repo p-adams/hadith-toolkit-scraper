@@ -5,19 +5,23 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.io.File
 
+fun prettyPrintToJsonFile(path: String, name: String, content: Any) {
+    File("src/main/kotlin/org/example/assets/$path", "$name.json").writeText( GsonBuilder()
+        .setPrettyPrinting()
+        .create()
+        .toJson(content))
+}
+
 fun chunkExtractedBiographyAssets(fileContent: String) {
     val itemType = object : TypeToken<List<ExtractedBiography>>() {}.type
     val extractedBiographies = Gson().fromJson<List<ExtractedBiography>>(fileContent, itemType)
     val pages = extractedBiographies.chunked(100)
     for((index, p) in pages.withIndex()) {
-        File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "$index.json").writeText( GsonBuilder()
-            .setPrettyPrinting()
-            .create()
-            .toJson(p))
+        prettyPrintToJsonFile("taqrib_al_tahdhib", index.toString(), p)
     }
 }
 
-fun totalBiographyIds(): List<String> {
+fun totalBiographyIdList(): List<String> {
     return (1..8826).map { it -> it.toString()}
 }
 
@@ -36,22 +40,22 @@ fun biographyIdList(): MutableList<String> {
 
 fun getMissingIds(): MutableList<String> {
     var missingIds = mutableListOf<String>()
-    totalBiographyIds().forEachIndexed { index, s ->
-       if (biographyIdList()[index] != s) {
-           missingIds.add(s)
+    var extractedIds = biographyIdList()
+    extractedIds.forEachIndexed { index, s ->
+       if (totalBiographyIdList()[index] != s) {
+           missingIds.add(totalBiographyIdList()[index])
        }
    }
     return missingIds
 }
 
+fun commitMissingIdsToFile() {
+    prettyPrintToJsonFile("taqrib_al_tahdhib", "missing_ids", getMissingIds())
+}
 
 fun createExtractedBiographyIdsFile() {
     val ids = biographyIdList()
-
-    File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "ids.json").writeText( GsonBuilder()
-        .setPrettyPrinting()
-        .create()
-        .toJson(ids))
+    prettyPrintToJsonFile("taqrib_al_tahdhib", "ids", ids)
 }
 
 fun removeDuplicateBiographies() {
@@ -66,9 +70,5 @@ fun removeDuplicateBiographies() {
             biographiesList.add(biography)
         }
     }
-    val jsonExtractedBiographyList = GsonBuilder()
-        .setPrettyPrinting()
-        .create()
-        .toJson(biographiesList)
-    File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "taqrib_raw_no_dupes.json").writeText(jsonExtractedBiographyList)
+    prettyPrintToJsonFile("taqrib_al_tahdhib", "taqrib_raw_no_dupes", biographiesList)
 }
