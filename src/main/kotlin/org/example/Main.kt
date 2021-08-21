@@ -2,7 +2,8 @@ package org.example
 
 
 fun main(args: Array<String>) {
-  missingBiographiesFromTxt()
+  commitMissingIdsToFile()
+  // missingBiographiesFromTxt()
 }
 
 

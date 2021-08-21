@@ -53,7 +53,7 @@ fun missingBiographiesFromTxt() {
     val lines = File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "missing_bios.txt").readLines()
     val missingBiographiesList = mutableListOf<ExtractedBiography>()
     lines.map { it ->
-       if (it.startsWith("[]")) {
+       if (it.replace("\\s".toRegex(), "").startsWith("[]")) {
             val parsedBiography = it.split("[]")[1]
             missingBiographiesList.add(ExtractedBiography("*", parsedBiography))
         } else {
