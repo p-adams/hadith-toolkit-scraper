@@ -49,6 +49,23 @@ fun getMissingIds(): MutableList<String> {
     return missingIds
 }
 
+fun missingBiographiesFromTxt() {
+    val lines = File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "missing_bios.txt").readLines()
+    val missingBiographiesList = mutableListOf<ExtractedBiography>()
+    lines.map { it ->
+       if (it.startsWith("[]")) {
+            val parsedBiography = it.split("[]")[1]
+            missingBiographiesList.add(ExtractedBiography("*", parsedBiography))
+        } else {
+            val parsedBiography = it.split("-")
+           val id = parsedBiography.first().replace("\\s".toRegex(), "")
+           val biography = parsedBiography[1]
+           missingBiographiesList.add(ExtractedBiography(id, biography))
+       }
+    }
+    prettyPrintToJsonFile("taqrib_al_tahdhib", "missing_bios", missingBiographiesList)
+}
+
 fun commitMissingIdsToFile() {
     prettyPrintToJsonFile("taqrib_al_tahdhib", "missing_ids", getMissingIds())
 }
