@@ -61,9 +61,5 @@ fun scrape() {
                }
         }
     }
-    val jsonExtractedBiographyList = GsonBuilder()
-        .setPrettyPrinting()
-        .create()
-        .toJson(extractedBiographies)
-    File("src/main/kotlin/org/example/assets/taqrib_al_tahdhib", "taqrib_raw.json").writeText(jsonExtractedBiographyList)
+    prettyPrintToJsonFile("taqrib_al_tahdhib", "taqrib_raw", extractedBiographies)
 }
